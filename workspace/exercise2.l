@@ -25,17 +25,14 @@ STRING      \"([^\\\n]|(\\.))*\"
 
 %%
 
-/* ----- Comentarios (se descartan) ----- */
 
 "//".*                      { /* Ignorar comentario línea */ }
 
 "/*"([^*]|\*+[^*/])*\*+"/"  { /* Ignorar comentario multilinea */ }
 
-/* ----- Strings ----- */
 
 {STRING}        { print_token("STRING", yytext); }
 
-/* ----- Operadores Relacionales ----- */
 
 "=="            { print_token("REL_OP", yytext); }
 "!="            { print_token("REL_OP", yytext); }
@@ -44,36 +41,30 @@ STRING      \"([^\\\n]|(\\.))*\"
 "<"             { print_token("REL_OP", yytext); }
 ">"             { print_token("REL_OP", yytext); }
 
-/* ----- Operadores Lógicos ----- */
 
 "&&"            { print_token("LOGIC_OP", yytext); }
 "||"            { print_token("LOGIC_OP", yytext); }
 "!"             { print_token("LOGIC_OP", yytext); }
 
-/* ----- Operadores Aritméticos ----- */
 
 "+"             { print_token("ARITH_OP", yytext); }
 "-"             { print_token("ARITH_OP", yytext); }
 "*"             { print_token("ARITH_OP", yytext); }
 "/"             { print_token("ARITH_OP", yytext); }
 
-/* ----- Números ----- */
 
 {SCIENTIFIC}    { print_token("SCIENTIFIC", yytext); }
 {FLOAT}         { print_token("FLOAT", yytext); }
 {HEXNUM}        { print_token("HEX", yytext); }
 {INTEGER}       { print_token("INTEGER", yytext); }
 
-/* ----- Identificadores ----- */
 
 {ID}            { print_token("IDENTIFIER", yytext); }
 
-/* ----- Espacios ----- */
 
 [ \t\r]+        { /* Ignorar espacios */ }
 \n              { line++; }
 
-/* ----- Error ----- */
 
 .               { printf("ERROR: %s at line %d\n", yytext, line); }
 
